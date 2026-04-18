@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "img": "https://img.icons8.com/color/96/warehouse.png",
+    "name": "স্টক বুক",
+    "feature": "রিয়েল টাইমে বিক্রিত ও অবশিষ্ট পণ্যের পরিমাণসহ স্টক পর্যবেক্ষণ করুন।"
+  },
+  {
+    "id": 2,
+    "img": "https://img.icons8.com/color/96/megaphone.png",
+    "name": "মার্কেটিং",
+    "feature": "অফার, নতুন পণ্য এবং বকেয়া পরিশোধের জন্য একসাথে কল বা এসএমএস পাঠান।"
+  },
+  {
+    "id": 3,
+    "img": "https://img.icons8.com/color/96/sales-performance.png",
+    "name": "বিক্রয়",
+    "feature": "মোবাইল ফোন থেকে সহজেই প্রতিটি বিক্রয় রেকর্ড করুন এবং দৈনিক বিক্রয় দেখুন।"
+  },
+  {
+    "id": 4,
+    "img": "https://img.icons8.com/color/96/return-purchase.png",
+    "name": "পণ্য ফেরত",
+    "feature": "গ্রাহক বা সরবরাহকারীর পণ্য ফেরত রেকর্ড করে স্টক সঠিক রাখুন।"
+  },
+  {
+    "id": 5,
+    "img": "https://img.icons8.com/color/96/bill.png",
+    "name": "খরচের খাতা",
+    "feature": "ভাড়া, বিদ্যুৎ, পরিবহন ও বেতনের মতো সকল খরচ রেকর্ড করুন।"
+  },
+  {
+    "id": 6,
+    "img": "https://img.icons8.com/color/96/cash-register.png",
+    "name": "ক্যাশ বক্স",
+    "feature": "নগদ টাকা আসা-যাওয়া ট্র্যাক করুন এবং সবসময় হাতে থাকা টাকার হিসাব জানুন।"
+  },
+  {
+    "id": 7,
+    "img": "https://img.icons8.com/color/96/customer-support.png",
+    "name": "অ্যাপ ট্রেনিং ও সাপোর্ট",
+    "feature": "গাইড, ভিডিও টিউটোরিয়াল এবং ২৪/৭ কাস্টমার সাপোর্ট সুবিধা নিন।"
+  },
+  {
+    "id": 8,
+    "img": "https://img.icons8.com/color/96/purchase-order.png",
+    "name": "ক্রয় খাতা",
+    "feature": "তারিখ, সরবরাহকারী, ইউনিট মূল্য ও পরিমাণ অনুযায়ী ক্রয় হিসাব রাখুন।"
+  },
+  {
+    "id": 9,
+    "img": "https://img.icons8.com/color/96/combo-chart.png",
+    "name": "বিক্রয় খাতা",
+    "feature": "তারিখ, পণ্য, পরিমাণ ও দামের ভিত্তিতে সকল বিক্রয় সংরক্ষণ করুন।"
+  },
+  {
+    "id": 10,
+    "img": "https://img.icons8.com/color/96/lock.png",
+    "name": "অ্যাপ অ্যাক্সেস",
+    "feature": "নির্দিষ্ট ফিচারে কর্মীদের অ্যাক্সেস নিয়ন্ত্রণ করুন।"
+  },
+  {
+    "id": 11,
+    "img": "https://img.icons8.com/color/96/delete.png",
+    "name": "রিসাইকেল বিন",
+    "feature": "ভুলবশত মুছে যাওয়া বিক্রয়, ক্রয়, বকেয়া ও পণ্যের তথ্য পুনরুদ্ধার করুন।"
+  },
+  {
+    "id": 12,
+    "img": "https://img.icons8.com/color/96/product.png",
+    "name": "পণ্য তালিকা",
+    "feature": "পণ্যের নাম, ক্যাটাগরি, মূল্য ও বারকোড নিরাপদে সংরক্ষণ করুন।"
+  },
+  {
+    "id": 13,
+    "img": "https://img.icons8.com/color/96/shop.png",
+    "name": "অনলাইন শপ",
+    "feature": "নিজস্ব ডিজিটাল দোকান তৈরি করুন যেখানে গ্রাহকরা পণ্য দেখতে ও অর্ডার করতে পারবেন।"
+  },
+  {
+    "id": 14,
+    "img": "https://img.icons8.com/color/96/expired.png",
+    "name": "মেয়াদোত্তীর্ণ পণ্য",
+    "feature": "যেসব পণ্যের মেয়াদ শেষ হওয়ার কাছাকাছি, সেগুলোর জন্য সতর্কতা পান।"
+  },
+  {
+    "id": 15,
+    "img": "https://img.icons8.com/color/96/bill.png",
+    "name": "বকেয়া খাতা",
+    "feature": "গ্রাহকের বকেয়া দেখুন এবং সাথে সাথে এসএমএস বা কল রিমাইন্ডার পাঠান।"
+  },
+  {
+    "id": 16,
+    "img": "https://img.icons8.com/color/96/phone-not-being-used.png",
+    "name": "বকেয়া পরিশোধ রিমাইন্ডার কল",
+    "feature": "এক ক্লিকেই গ্রাহকদের স্বয়ংক্রিয় পেমেন্ট রিমাইন্ডার কল পাঠান।"
+  },
+  {
+    "id": 17,
+    "img": "https://img.icons8.com/color/96/warranty.png",
+    "name": "ওয়ারেন্টি",
+    "feature": "ওয়ারেন্টির তথ্য সংরক্ষণ করুন এবং মেয়াদ শেষ হওয়ার তারিখ ট্র্যাক করুন।"
+  },
+  {
+    "id": 18,
+    "img": "https://img.icons8.com/color/96/purchase-order.png",
+    "name": "ক্রয়",
+    "feature": "সরবরাহকারী, পরিমাণ ও খরচসহ প্রতিটি ক্রয় এক জায়গায় রেকর্ড করুন।"
+  },
+  {
+    "id": 19,
+    "img": "https://img.icons8.com/color/96/combo-chart.png",
+    "name": "ব্যবসায়িক রিপোর্ট",
+    "feature": "দৈনিক, সাপ্তাহিক ও মাসিক লাভ-ক্ষতির রিপোর্ট দেখুন।"
+  },
+  {
+    "id": 20,
+    "img": "https://img.icons8.com/color/96/contacts.png",
+    "name": "কন্টাক্টস",
+    "feature": "গ্রাহক ও সরবরাহকারীর তথ্য সংরক্ষণ করুন এবং সরাসরি এসএমএস পাঠান।"
+  },
+  {
+    "id": 21,
+    "img": "https://img.icons8.com/color/96/print.png",
+    "name": "প্রিন্টার",
+    "feature": "ব্লুটুথ প্রিন্টার ব্যবহার করে ইনভয়েস, বকেয়া স্লিপ ও রিপোর্ট প্রিন্ট করুন।"
+  }
+]

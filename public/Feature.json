@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "img": "https://img.icons8.com/color/96/warehouse.png",
+    "name": "Stock Book",
+    "feature": "Monitor stock levels in real time including sold and remaining units."
+  },
+  {
+    "id": 2,
+    "img": "https://img.icons8.com/color/96/megaphone.png",
+    "name": "Marketing",
+    "feature": "Send bulk calls or SMS for offers, new products, and payment reminders."
+  },
+  {
+    "id": 3,
+    "img": "https://img.icons8.com/color/96/sales-performance.png",
+    "name": "Sell",
+    "feature": "Quickly record every sale from your mobile phone and view daily sales clearly."
+  },
+  {
+    "id": 4,
+    "img": "https://img.icons8.com/color/96/return-purchase.png",
+    "name": "Product Returns",
+    "feature": "Record customer or supplier product returns to keep stock accurate."
+  },
+  {
+    "id": 5,
+    "img": "https://img.icons8.com/color/96/bill.png",
+    "name": "Expenses Book",
+    "feature": "Record expenses like rent, electricity, transport, and salaries."
+  },
+  {
+    "id": 6,
+    "img": "https://img.icons8.com/color/96/cash-register.png",
+    "name": "Cash Box",
+    "feature": "Track all cash inflows and outflows and always know your available cash."
+  },
+  {
+    "id": 7,
+    "img": "https://img.icons8.com/color/96/customer-support.png",
+    "name": "App Training & Support",
+    "feature": "Access guides, video tutorials, and 24/7 customer support."
+  },
+  {
+    "id": 8,
+    "img": "https://img.icons8.com/color/96/purchase-order.png",
+    "name": "Purchase Book",
+    "feature": "Track purchases by date, supplier, unit price, and quantity in an organized way."
+  },
+  {
+    "id": 9,
+    "img": "https://img.icons8.com/color/96/combo-chart.png",
+    "name": "Sales Book",
+    "feature": "Store all sales by date, product, quantity, and price to track business accurately."
+  },
+  {
+    "id": 10,
+    "img": "https://img.icons8.com/color/96/lock.png",
+    "name": "App Access",
+    "feature": "Control employee access by allowing only selected features."
+  },
+  {
+    "id": 11,
+    "img": "https://img.icons8.com/color/96/delete.png",
+    "name": "Recycle Bin",
+    "feature": "Restore accidentally deleted sales, purchases, dues, and product data easily."
+  },
+  {
+    "id": 12,
+    "img": "https://img.icons8.com/color/96/product.png",
+    "name": "Product List",
+    "feature": "Save product names, categories, prices, and barcodes securely."
+  },
+  {
+    "id": 13,
+    "img": "https://img.icons8.com/color/96/shop.png",
+    "name": "Online Shop",
+    "feature": "Create your own digital store where customers can view and order products."
+  },
+  {
+    "id": 14,
+    "img": "https://img.icons8.com/color/96/expired.png",
+    "name": "Expire Product",
+    "feature": "Get alerts for products that are nearing expiration."
+  },
+  {
+    "id": 15,
+    "img": "https://img.icons8.com/color/96/bill.png",
+    "name": "Due Book",
+    "feature": "View customer dues and send reminder SMS or calls instantly."
+  },
+  {
+    "id": 16,
+    "img": "https://img.icons8.com/color/96/phone-not-being-used.png",
+    "name": "Due Payment Reminder Calls",
+    "feature": "Send automatic payment reminder calls to customers with one click."
+  },
+  {
+    "id": 17,
+    "img": "https://img.icons8.com/color/96/warranty.png",
+    "name": "Warranty",
+    "feature": "Store warranty details and track expiry dates easily."
+  },
+  {
+    "id": 18,
+    "img": "https://img.icons8.com/color/96/purchase-order.png",
+    "name": "Purchase",
+    "feature": "Record every purchase with supplier, quantity, and cost in one place."
+  },
+  {
+    "id": 19,
+    "img": "https://img.icons8.com/color/96/combo-chart.png",
+    "name": "Business Reports",
+    "feature": "Get daily, weekly, and monthly reports with profit and loss analysis."
+  },
+  {
+    "id": 20,
+    "img": "https://img.icons8.com/color/96/contacts.png",
+    "name": "Contacts",
+    "feature": "Save customer and supplier details and send SMS directly."
+  },
+  {
+    "id": 21,
+    "img": "https://img.icons8.com/color/96/print.png",
+    "name": "Printer",
+    "feature": "Print invoices, due slips, and reports using a Bluetooth printer."
+  }
+]
