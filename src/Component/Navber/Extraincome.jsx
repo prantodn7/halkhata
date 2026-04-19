@@ -7,7 +7,7 @@ import profit2 from '../../assets/Dep/dep2.jpeg'
 import profit3 from '../../assets/Dep/dep3.jpeg'
 import photo2 from '../../assets/extra2.jpeg'
 import { RxCross1 } from 'react-icons/rx'
-import { Link } from '@/compat/react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSettings } from '../../context/SettingsContext'
 
 function Extraincome() {

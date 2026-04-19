@@ -1,23 +1,16 @@
-# Halkhata Web
+# React + Vite
 
-This project is now a Next.js App Router application migrated from a Vite + React Router SPA.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Scripts
+Currently, two official plugins are available:
 
-- `npm run dev` starts the Next.js development server
-- `npm run build` builds the production app
-- `npm run start` serves the production build
-- `npm run lint` runs ESLint
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Environment
+## React Compiler
 
-Set these variables in `.env`:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+## Expanding the ESLint configuration
 
-## Notes
-
-- Public marketing routes use a shared layout with navbar and footer.
-- `/admin` keeps the existing client-side Supabase admin guard for minimal behavior change.
-- `/support` and `/forgot-password` redirect to `/contact`.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

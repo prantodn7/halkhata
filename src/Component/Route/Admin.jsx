@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { FiShield, FiUsers, FiDownload, FiLink, FiSave, FiCheck, FiLoader, FiMail, FiPhone, FiUser, FiSearch, FiShield as FiShieldSmall, FiHome, FiActivity, FiTrendingUp, FiLogOut, FiMenu, FiX, FiDownloadCloud } from 'react-icons/fi';
-import { useNavigate } from '@/compat/react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { supabase } from '../../config/supabaseClient';
 import { FadeIn, ScaleIn } from '../Animated/AnimatedWrapper';

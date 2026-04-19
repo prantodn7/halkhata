@@ -6,7 +6,7 @@ import { IoMdTime } from 'react-icons/io'
 import { IoLocationOutline, IoPeopleOutline } from 'react-icons/io5'
 import { MdOutlineAccessTime, MdLanguage } from 'react-icons/md'
 import { FaFacebook } from 'react-icons/fa'
-import { Link } from '@/compat/react-router-dom'
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../../context/LanguageContext'
 
 function Footer() {

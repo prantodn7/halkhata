@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { Link } from '@/compat/react-router-dom';
+import { Link } from 'react-router-dom';
 import photo from '../../assets/Busniess/electronic.jpeg'
 import { useSettings } from '../../context/SettingsContext'
 

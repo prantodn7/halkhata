@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { Link } from '@/compat/react-router-dom'
+import { Link } from 'react-router-dom'
 import { HiArrowRight } from 'react-icons/hi'
 import { FiGrid } from 'react-icons/fi'
 import { FadeIn } from '../Animated/AnimatedWrapper'

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { Link } from '@/compat/react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaBox, FaChartLine, FaUserMd, FaChartBar, FaSms, FaShoppingCart, FaUsersCog } from 'react-icons/fa';
 import { IoCheckmarkCircle, IoCloseCircle } from 'react-icons/io5';
 import photo from '../../assets/Busniess/pharmecy.jpeg'

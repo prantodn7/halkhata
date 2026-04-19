@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiUser, FiMail, FiPhone, FiLock, FiEye, FiEyeOff, FiLoader } from 'react-icons/fi';
-import { Link, useNavigate } from '@/compat/react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { supabase } from '../../config/supabaseClient';
 
