@@ -1,126 +1,137 @@
 # Halkhata Next.js Migration Audit
 
-## 1. Current stack summary
-- Framework: React 19.2
-- Build tool: Vite (`rolldown-vite`)
-- Language: JavaScript / JSX
-- Router: React Router DOM 7 with `createBrowserRouter`
-- State management: React Context (`LanguageContext`, `SettingsContext`)
-- Styling: Tailwind CSS 4 via Vite plugin, global CSS, inline page-level `<style>` blocks
-- API/auth: Supabase JS client in the browser
-- i18n: custom context toggle, not `i18next` in practice
-- Testing: none
-- Linting: ESLint only
+## 1. Current stack summary at audit time
+- Framework state: partially migrated Next.js App Router application with legacy Vite files still present.
+- React: 19.x.
+- Next.js target: `next` 16.x in `package.json`, but the current installed `node_modules` did not contain `next` before dependency sync.
+- Language: JavaScript/JSX UI, with TypeScript used only for `app/api/**/route.ts` at audit time.
+- Routing: Next App Router under `app/`; legacy `src/Component/Route/Router.jsx` still documents old React Router routes and uses a local compatibility shim.
+- State management: React Context (`LanguageContext`, `SettingsContext`, `DownloadsContext`).
+- Styling: Tailwind CSS 4 via PostCSS plus global CSS and component-local `<style>` blocks.
+- API/auth: Supabase JS client, Supabase auth in client components, Next route handlers for download settings.
+- i18n: custom in-memory Bangla/English context.
+- Testing: no test framework found.
+- Linting: ESLint flat config; initial config was not TypeScript-aware for API route files.
 
-## 2. Route inventory
-| Current route | Type | Notes |
-| --- | --- | --- |
-| `/` | Static marketing page | Shared navbar/footer layout |
-| `/features` | Static marketing page | Loads feature JSON based on language |
-| `/extraincome` | Static marketing page | Client-only content |
-| `/contact` | Static marketing page | Client form UI only |
-| `/login` | Auth page | Supabase password sign-in |
-| `/registration` | Auth page | Supabase sign-up |
-| `/debug` | Utility/debug page | Allows metadata update for admin testing |
-| `/pharmacy` | Static business page | Browser scroll effect |
-| `/dealer` | Static business page | Browser scroll effect |
-| `/electronics` | Static business page | Browser scroll effect |
-| `/fashion` | Static business page | Browser scroll effect |
-| `/hardware` | Static business page | Browser scroll effect |
-| `/grocery` | Static business page | Browser scroll effect |
-| `/growthpartner` | Static marketing page | FAQ state + scroll effect |
-| `/admin` | Protected client page | Supabase session + metadata guard |
+## 2. Project structure
+- `app/`: Next App Router routes, layouts, loading, not-found, and API route handlers.
+- `app/(marketing)/`: public marketing pages with shared navbar/footer layout.
+- `app/(auth)/`: login and registration pages.
+- `app/api/download-url`, `app/api/downloads`: Supabase-backed API endpoints with fallbacks.
+- `compat/react-router-dom.js`: temporary Next-backed shim for old `Link`, `NavLink`, `useNavigate`, and related imports.
+- `src/Component/`: legacy feature, business, nav, home, admin, and route components.
+- `src/components/`: Next-specific provider and layout wrappers.
+- `src/context/`: language, settings, and downloads contexts.
+- `src/config/supabaseClient.js`: browser Supabase client.
+- `src/lib/downloads.js`: fallback download URLs and button keys.
+- `src/assets/`: imported images.
+- `public/`: static JSON feature data and legacy Vite asset.
+- `supabase/`: SQL setup and migrations for download button tables/settings.
 
-Additional linked but missing routes:
-- `/support`
-- `/forgot-password`
+## 3. Route inventory
+| Legacy route | Current/target Next route | Type | Notes |
+| --- | --- | --- | --- |
+| `/` | `app/(marketing)/page.jsx` | Static marketing, client-rendered | Home sections use context and animation hooks. |
+| `/features` | `app/(marketing)/features/page.jsx` | Static marketing, client-rendered | Fetches `/Feature.json` or `/Featureban.json`. |
+| `/reffer` | `app/(marketing)/reffer/page.jsx` | Static marketing, client-rendered | Missing from partial migration; must be added for parity. |
+| `/contact` | `app/(marketing)/contact/page.jsx` | Static marketing, client-rendered | Uses `window.scrollTo` in effect. |
+| `/extraincome` | `app/(marketing)/extraincome/page.jsx` | Static marketing, client-rendered | Uses imported assets and links. |
+| `/growthpartner` | `app/(marketing)/growthpartner/page.jsx` | Static marketing, client-rendered | Linked in footer; FAQ state. |
+| `/pharmacy` | `app/(marketing)/pharmacy/page.jsx` | Static marketing, client-rendered | Business page with scroll effect. |
+| `/grocery` | `app/(marketing)/grocery/page.jsx` | Static marketing, client-rendered | Business page with scroll effect. |
+| `/electronics` | `app/(marketing)/electronics/page.jsx` | Static marketing, client-rendered | Business page with scroll effect. |
+| `/fashion` | `app/(marketing)/fashion/page.jsx` | Static marketing, client-rendered | Business page with scroll effect. |
+| `/hardware` | `app/(marketing)/hardware/page.jsx` | Static marketing, client-rendered | Business page with scroll effect. |
+| `/dealer` | `app/(marketing)/dealer/page.jsx` | Static marketing, client-rendered | Business page with support link. |
+| `/login` | `app/(auth)/login/page.jsx` | Auth-only, client-rendered | Supabase password sign-in. |
+| `/registration` | `app/(auth)/registration/page.jsx` | Auth-only, client-rendered | Supabase sign-up. |
+| `/admin` | `app/admin/page.jsx` | Protected admin, client-rendered | Client session and metadata guard. |
+| `/support` | `app/support/page.jsx` | Redirect | Redirects to `/contact`. |
+| `/forgot-password` | `app/forgot-password/page.jsx` | Redirect | Redirects to `/contact`. |
 
-## 3. Page-by-page migration mapping
-- `/` -> `app/(marketing)/page.jsx`
-- `/features` -> `app/(marketing)/features/page.jsx`
-- `/extraincome` -> `app/(marketing)/extraincome/page.jsx`
-- `/contact` -> `app/(marketing)/contact/page.jsx`
-- `/login` -> `app/(auth)/login/page.jsx`
-- `/registration` -> `app/(auth)/registration/page.jsx`
-- `/debug` -> `app/debug/page.jsx`
-- `/pharmacy` -> `app/(marketing)/pharmacy/page.jsx`
-- `/dealer` -> `app/(marketing)/dealer/page.jsx`
-- `/electronics` -> `app/(marketing)/electronics/page.jsx`
-- `/fashion` -> `app/(marketing)/fashion/page.jsx`
-- `/hardware` -> `app/(marketing)/hardware/page.jsx`
-- `/grocery` -> `app/(marketing)/grocery/page.jsx`
-- `/growthpartner` -> `app/(marketing)/growthpartner/page.jsx`
-- `/admin` -> `app/admin/page.jsx`
-- `/support` -> redirect to `/contact`
-- `/forgot-password` -> redirect to `/contact`
+No dynamic UI pages were found. Dynamic API route: `/api/downloads/[button_key]`.
 
-## 4. Component architecture notes
-- Shared public shell is currently `Main` with `Navber`, `Outlet`, `Footer`.
-- `Home` composes `Cover`, `Grow`, `Compare`, `Busniess`, `Downloadbanner`.
-- `Navber` owns auth-state subscription, admin link visibility, mobile menu state, and browser-only effects.
-- `Footer` owns language switching.
-- Business pages and marketing pages are mostly presentational but many call `window.scrollTo()` in `useEffect`.
-- `AnimatedWrapper` and `useOnScreen` depend on Intersection Observer and reduced-motion media queries.
+## 4. Page-by-page rendering strategy
+- Root layout, marketing layout, redirects, loading, and not-found can remain Server Components unless importing client-only wrappers.
+- Public marketing pages should remain Client Components for this migration because they consume client contexts, animation hooks, browser-only effects, and mutable language state.
+- Auth pages must remain Client Components because they call Supabase auth directly and manage forms locally.
+- Admin page must remain a Client Component because authorization, session lookup, dashboard state, and admin interactions currently run through the browser Supabase client.
+- API routes remain server route handlers and should not import browser-only modules.
 
-## 5. State management notes
-- `LanguageContext` stores `bangla` vs `english` in memory only.
-- `SettingsContext` fetches `download_url` from Supabase `settings` and exposes `refetch`.
-- No Redux/Zustand/etc.
-- Auth state is local component state sourced from `supabase.auth`.
+## 5. Component architecture notes
+- `MarketingShell` replaces old `Main`/`Outlet` layout behavior with shared `Navber` and `Footer`.
+- `Navber` owns auth subscription, admin visibility, mobile menu state, scroll state, logout, and download URL display.
+- Home composes `Cover`, `Grow`, `Compare`, `Busniess`, and `Downloadbanner`.
+- Business pages are mostly presentational but use `useEffect` for scrolling.
+- `AnimatedWrapper` and `useOnScreen` require browser APIs through effects.
+- `Router.jsx`, `Main.jsx`, `src/main.jsx`, and `App.jsx` are obsolete after App Router parity is complete.
 
-## 6. Styling migration notes
-- Tailwind utility classes are used across almost every component.
-- Global animation CSS currently lives in `src/index.css`.
-- Several pages embed custom keyframes inside component-local `<style>` tags.
-- Existing UI should be preserved; no redesign is required.
+## 6. State management notes
+- `LanguageContext` is in-memory only and defaults to Bangla.
+- `SettingsContext` fetches the header download button through `/api/downloads/header_download`.
+- `DownloadsContext` currently returns fallback download data and exposes compatibility helpers.
+- No Redux, Zustand, MobX, Recoil, React Query, or RTK Query was found.
+- Admin and navbar auth state are local component state derived from Supabase sessions.
 
-## 7. API/data fetching notes
-- Supabase env keys currently use `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
-- `SettingsContext` reads `settings.download_url`.
-- Admin reads `get_all_users` RPC and upserts `settings.download_url`.
-- Features page reads `public/Feature.json` and `public/Featureban.json`.
-- Contact form is UI-only and does not submit anywhere.
+## 7. Styling migration notes
+- Tailwind utility classes are pervasive and should be preserved.
+- `app/globals.css` mirrors `src/index.css`; the Vite CSS file becomes obsolete after removing `src/main.jsx`.
+- Component-local `<style>` blocks are used for page animations and should be preserved for behavior parity.
+- Use `next/image` only as a later optimization; current imported image `src` usage is lower-risk for parity.
 
-## 8. Auth migration notes
-- Login uses `supabase.auth.signInWithPassword`.
-- Registration uses `supabase.auth.signUp`.
-- Admin authorization is determined entirely on the client from user/app metadata.
-- Navbar visibility for login/logout/admin is driven by `supabase.auth.onAuthStateChange`.
-- Debug page can update the current user metadata to `role: admin`.
+## 8. API/data fetching notes
+- Browser fetches:
+  - `/api/downloads/header_download` from `SettingsContext`.
+  - `/Feature.json` and `/Featureban.json` from the features page.
+  - `/api/download-url` and `/api/downloads` from admin download tools.
+- Supabase direct browser calls:
+  - login/sign-up/auth session/logout.
+  - admin RPC `get_all_users`.
+- Server route handlers use `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`; this preserves existing anon-key behavior but is not a privileged server admin integration.
+- API route handlers include fallback data when Supabase is not configured.
 
-## 9. Risk list
-- Browser-only APIs: `window`, `document`, `window.matchMedia`, `window.scrollTo`, `window.location.href`
-- Router assumptions: `NavLink`, `useNavigate`, `useLocation`, `Outlet`
-- Client-only auth/session expectations in `/admin` and navbar
-- Relative public fetch on features page
-- Environment variable rename from `VITE_*` to `NEXT_PUBLIC_*`
-- Static asset path and case-sensitivity risk (`Hardware.jpeg` import)
-- Debug route exposes admin elevation behavior and should be treated as production-sensitive
-- Current repo already has ESLint issues unrelated to Next
+## 9. Auth migration notes
+- Current admin protection is client-side only: unauthenticated users are redirected to `/login`, non-admin users see access denied.
+- Admin status is checked from `user_metadata` or `app_metadata` role/isAdmin flags.
+- No cookie-backed middleware session is present, so Next middleware protection would require a broader Supabase auth refactor.
+- For this migration, keep client-side protection for behavior parity and document it as a production risk.
 
-## 10. Recommended migration strategy
-- Use Next.js App Router.
-- Keep JavaScript/JSX.
-- Preserve existing components and business logic.
-- Introduce a small router-compat layer instead of rewriting the entire component tree at once.
-- Keep Supabase auth and settings fetching client-side for parity.
-- Redirect missing linked routes to `/contact`.
+## 10. Migration risks
+- Stale `package-lock.json` and installed modules did not include `next`.
+- ESLint initially failed to parse `.ts` API route handlers.
+- Browser-only APIs include `window`, `document`, `navigator.clipboard`, `window.open`, `window.matchMedia`, and `IntersectionObserver`.
+- `react-router-dom` call sites are still present through `compat/react-router-dom.js`; the shim is temporary technical debt.
+- `/reffer` was missing from the Next route tree.
+- Client-side admin protection does not prevent server delivery of the admin bundle.
+- Supabase env vars must be `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- Feature JSON fetch paths must stay rooted at `/`.
+- Imported asset paths are case-sensitive on Linux deployments.
+- Existing Bangla strings in some files appear mojibake-encoded and should not be altered as part of routing migration without a separate content review.
 
-## 11. Estimated impact areas
-- `package.json` and dependency tree
-- App entry and global CSS
-- Route shell and layouts
-- React Router usage across shared components and pages
-- Supabase env configuration
-- Build/lint setup
+## 11. Recommended migration strategy
+- Finish the current App Router migration instead of restarting.
+- Keep JavaScript/JSX UI and current Supabase/auth/state patterns.
+- Add route parity, dependency sync, lint/build fixes, and remove Vite leftovers.
+- Keep the router compatibility shim for this pass, then optionally replace it with native Next navigation in a later refactor.
+- Keep marketing pages client-rendered initially; server-component optimization can happen later route by route.
 
-## 12. Checklist of files/features to verify after migration
-- Navbar active links, login/logout state, admin visibility
-- Footer language switcher
-- Home sections and business pages
-- Features JSON loading in both languages
-- Download buttons using Supabase-driven URL
-- Login and registration flows
-- Admin access guard, user list RPC, settings upsert
-- `/support` and `/forgot-password` redirects
-- Browser-only effects and hydration safety
+## 12. Estimated impact areas
+- Dependency graph and lockfile.
+- App Router route inventory and missing `/reffer` page.
+- ESLint configuration for mixed JS/TS code.
+- Legacy Vite entry/config files.
+- Admin/download lint blockers.
+- Migration documentation and final summary.
+
+## 13. Post-migration verification checklist
+- `npm install`, `npm run lint`, and `npm run build`.
+- Public routes: `/`, `/features`, `/reffer`, `/contact`, `/extraincome`, `/growthpartner`.
+- Business routes: `/pharmacy`, `/grocery`, `/electronics`, `/fashion`, `/hardware`, `/dealer`.
+- Redirects: `/support`, `/forgot-password`.
+- Auth routes: `/login`, `/registration`.
+- Admin route: session redirect, access denied state, dashboard, users RPC, download settings.
+- Navbar: active links, mobile menu, login/logout, admin link visibility, download URL.
+- Footer: language switching and links.
+- API fallbacks when Supabase env vars are absent.
+- Feature JSON loading in both languages.
+- Image and asset rendering on case-sensitive deployment.

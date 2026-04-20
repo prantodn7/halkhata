@@ -319,3 +319,88 @@ html {
 body {
     min-height: 100vh;
 }
+
+/* ========================================
+   COVER PAGE ANIMATIONS
+   Mirrors the latest legacy Vite globals during migration.
+   ======================================== */
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes rotateRing {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-rotate-ring {
+    animation: rotateRing 20s linear infinite;
+}
+
+@keyframes floatImage {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float-image {
+    animation: floatImage 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+.animate-shine {
+    animation: shine 2.5s ease-in-out infinite;
+}
+
+@keyframes orbit1 {
+    0% {
+        transform: rotate(0deg) translateX(20px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(20px) rotate(-360deg);
+    }
+}
+
+.animate-orbit-1 {
+    animation: orbit1 6s linear infinite;
+}
+
+@keyframes orbit2 {
+    0% {
+        transform: rotate(0deg) translateX(15px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg) translateX(15px) rotate(360deg);
+    }
+}
+
+.animate-orbit-2 {
+    animation: orbit2 5s linear infinite;
+}

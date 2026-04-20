@@ -1,16 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getFallbackButton } from '@/src/lib/downloads';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
-// PUT /api/downloads/:button_key - Update a download button
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: Promise<{ button_key: string }> }
-) {
+// PUT /api/downloads/:button_key - Update a download button.
+export async function PUT(request, { params }) {
     try {
         const { button_key: buttonKey } = await params;
 
@@ -25,7 +22,7 @@ export async function PUT(
             .update({
                 file_url: body.file_url,
                 status: body.status,
-                updated_at: new Date().toISOString()
+                updated_at: new Date().toISOString(),
             })
             .eq('button_key', buttonKey)
             .select()
@@ -43,11 +40,8 @@ export async function PUT(
     }
 }
 
-// GET /api/downloads/:button_key - Get a single download button
-export async function GET(
-    request: NextRequest,
-    { params }: { params: Promise<{ button_key: string }> }
-) {
+// GET /api/downloads/:button_key - Get a single download button.
+export async function GET(_request, { params }) {
     try {
         const { button_key: buttonKey } = await params;
         const fallbackButton = getFallbackButton(buttonKey);

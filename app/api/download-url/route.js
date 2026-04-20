@@ -8,7 +8,7 @@ const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabase
 
 const DOWNLOAD_URL_KEY = 'app_download_url';
 
-// GET /api/download-url - Get the single download URL
+// GET /api/download-url - Get the single download URL.
 export async function GET() {
     try {
         if (!supabase) {
@@ -27,7 +27,7 @@ export async function GET() {
         }
 
         return NextResponse.json({
-            data: { file_url: data?.value || DEFAULT_DOWNLOAD_URL }
+            data: { file_url: data?.value || DEFAULT_DOWNLOAD_URL },
         });
     } catch (err) {
         console.error('API Error:', err);
@@ -35,8 +35,8 @@ export async function GET() {
     }
 }
 
-// PUT /api/download-url - Update the download URL
-export async function PUT(request: Request) {
+// PUT /api/download-url - Update the download URL.
+export async function PUT(request) {
     try {
         if (!supabase) {
             return NextResponse.json({ error: 'Database is not configured' }, { status: 503 });

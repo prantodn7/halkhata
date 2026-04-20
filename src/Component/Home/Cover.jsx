@@ -1,7 +1,8 @@
 ﻿import React from 'react'
 
 import photo from '../../assets/photo.png'
-import { FiArrowRight, FiPlay, FiUsers, FiTrendingUp, FiShield } from 'react-icons/fi'
+import Image from 'next/image'
+import { FiArrowRight } from 'react-icons/fi'
 import { FadeIn, ScaleIn } from '../Animated/AnimatedWrapper'
 import { useLanguage } from '../../context/LanguageContext'
 import { useSettings } from '../../context/SettingsContext'
@@ -9,12 +10,6 @@ import { useSettings } from '../../context/SettingsContext'
 function Cover() {
   const { language } = useLanguage();
   const { downloadUrl } = useSettings();
-
-  const _stats = [
-    { icon: <FiUsers />, value: "50K+", label: "Active Users", labelBan: "সক্রিয় ব্যবহারকারী" },
-    { icon: <FiTrendingUp />, value: "98%", label: "Growth Rate", labelBan: "বৃদ্ধির হার" },
-    { icon: <FiShield />, value: "100%", label: "Secure", labelBan: "নিরাপদ" }
-  ];
 
   const texts = {
     brandName: language === 'bangla' ? 'হালখাতা' : 'Halkhata',
@@ -126,7 +121,13 @@ function Cover() {
 
                 {/* Main image with floating animation */}
                 <div className="relative bg-white p-2 md:p-3 rounded-2xl md:rounded-3xl shadow-2xl shadow-gray-200/50 hover:shadow-emerald-200/50 transition-all duration-500 max-w-[320px] md:max-w-[400px] mx-auto animate-float-image hover:scale-105">
-                  <img className="w-full h-auto rounded-xl md:rounded-2xl object-cover" src={photo} alt="Halkhata Business Management" />
+                  <Image
+                    className="w-full h-auto rounded-xl md:rounded-2xl object-cover"
+                    src={photo}
+                    alt="Halkhata Business Management"
+                    priority
+                    sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 320px"
+                  />
 
                   {/* Shine effect overlay */}
                   <div className="absolute inset-0 rounded-xl md:rounded-2xl overflow-hidden pointer-events-none">

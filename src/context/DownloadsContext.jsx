@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { DEFAULT_DOWNLOAD_URL } from '../lib/downloads';
+import { DEFAULT_DOWNLOAD_URL, FALLBACK_BUTTONS } from '../lib/downloads';
 
 export { BUTTON_KEYS, DEFAULT_DOWNLOAD_URL } from '../lib/downloads';
 
@@ -12,7 +12,9 @@ export const useDownloads = () => {
         return {
             downloadUrl: DEFAULT_DOWNLOAD_URL,
             getDownloadUrl: () => DEFAULT_DOWNLOAD_URL,
+            getAllButtons: () => FALLBACK_BUTTONS,
             isButtonActive: () => true,
+            refreshDownloads: async () => {},
             loading: false,
         };
     }
@@ -24,7 +26,9 @@ export const DownloadsProvider = ({ children }) => {
     const value = {
         downloadUrl: DEFAULT_DOWNLOAD_URL,
         getDownloadUrl: () => DEFAULT_DOWNLOAD_URL,
+        getAllButtons: () => FALLBACK_BUTTONS,
         isButtonActive: () => true,
+        refreshDownloads: async () => {},
         loading: false,
     };
 

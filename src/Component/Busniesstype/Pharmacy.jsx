@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 ;
-import { Link } from 'react-router-dom';
+import Image from 'next/image';
+import { Link } from '@/compat/react-router-dom';
 import { FaBox, FaChartLine, FaUserMd, FaChartBar, FaSms, FaShoppingCart, FaUsersCog } from 'react-icons/fa';
 import { IoCheckmarkCircle, IoCloseCircle } from 'react-icons/io5';
 import photo from '../../assets/Busniess/pharmecy.jpeg'
@@ -174,7 +175,7 @@ const Pharmacy = () => {
                         </div>
                     </div>
                     <div className='flex-1 mt-8 md:mt-0 anim-scale delay-300'>
-                        <Image src={photo} alt="Pharmacy Management" className='rounded-xl shadow-xl w-full' />
+                        <Image src={photo} alt="Pharmacy Management" className='rounded-xl shadow-xl w-full h-auto' priority sizes="(min-width: 768px) 50vw, 100vw" />
                     </div>
                 </div>
 

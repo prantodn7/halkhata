@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 ;
-import { Link } from 'react-router-dom';
+import Image from 'next/image';
+import { Link } from '@/compat/react-router-dom';
 import photo from '../../assets/Busniess/dealer.jpeg'
 import { useSettings } from '../../context/SettingsContext'
 
@@ -65,7 +66,7 @@ const Dealer = () => {
                         </div>
                     </div>
                     <div className='flex-1 mt-8 md:mt-0 anim-fade-right delay-200'>
-                        <Image src={photo} alt="Dealer Business" className='rounded-xl shadow-md w-full object-cover' />
+                        <Image src={photo} alt="Dealer Business" className='rounded-xl shadow-md w-full h-auto object-cover' priority sizes="(min-width: 768px) 50vw, 100vw" />
                     </div>
                 </div>
 

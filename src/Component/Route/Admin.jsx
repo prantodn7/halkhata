@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { FiShield, FiUsers, FiDownload, FiLink, FiSave, FiCheck, FiLoader, FiMail, FiPhone, FiUser, FiSearch, FiShield as FiShieldSmall, FiHome, FiActivity, FiTrendingUp, FiLogOut, FiMenu, FiX, FiDownloadCloud } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/compat/react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { supabase } from '../../config/supabaseClient';
 import { FadeIn, ScaleIn } from '../Animated/AnimatedWrapper';
@@ -38,7 +38,6 @@ const Admin = () => {
         notAdmin: language === 'bangla' ? 'আপনার এই পেজে অ্যাক্সেস করার অনুমতি নেই' : 'You do not have permission to access this page',
         goHome: language === 'bangla' ? 'হোম এ যান' : 'Go Home',
         totalUsers: language === 'bangla' ? 'মোট ব্যবহারকারী' : 'Total Users',
-        downloadSettings: language === 'bangla' ? 'ডাউনলোড সেটিংস' : 'Download Settings',
         downloadUrl: language === 'bangla' ? 'ডাউনলোড লিংক' : 'Download URL',
         downloadUrlPlaceholder: language === 'bangla' ? 'APK ডাউনলোড লিংক দিন' : 'Enter APK download link',
         save: language === 'bangla' ? 'সংরক্ষণ করুন' : 'Save',
@@ -55,7 +54,7 @@ const Admin = () => {
         makeAdmin: language === 'bangla' ? 'অ্যাডমিন করুন' : 'Make Admin',
         removeAdmin: language === 'bangla' ? 'অ্যাডমিন সরান' : 'Remove Admin',
         confirmRemove: language === 'bangla' ? 'অ্যাডমিন সরাতে চান?' : 'Remove admin access?',
-        menuDownload: language === 'bangla' ? 'ডাউনলোড সেটিংস' : 'Download Settings',
+        downloadSettings: language === 'bangla' ? 'ডাউনলোড সেটিংস' : 'Download Settings',
         menuUsers: language === 'bangla' ? 'সকল ব্যবহারকারী' : 'All Users',
         logout: language === 'bangla' ? 'লগআউট' : 'Logout',
         changeAppDownloadLink: language === 'bangla' ? 'অ্যাপ ডাউনলোড লিংক পরিবর্তন করুন' : 'Change app download link',
@@ -78,9 +77,6 @@ const Admin = () => {
 
     // Fetch all users list - only once
     const fetchUsersList = useCallback(async () => {
-        // Prevent multiple simultaneous calls
-        if (usersLoading && usersList.length > 0) return;
-
         setUsersLoading(true);
         usersFetchCancelled.current = false;
 
@@ -97,10 +93,10 @@ const Admin = () => {
                 setUsersList(data);
                 setTotalUsers(data.length);
                 // Update stats
-                setStatsCards([
-                    { ...statsCards[0], value: data.length.toString() },
-                    { ...statsCards[1], value: Math.floor(data.length * 0.7).toString() },
-                    { ...statsCards[2], value: Math.floor(data.length * 0.15).toString() }
+                setStatsCards((currentStatsCards) => [
+                    { ...currentStatsCards[0], value: data.length.toString() },
+                    { ...currentStatsCards[1], value: Math.floor(data.length * 0.7).toString() },
+                    { ...currentStatsCards[2], value: Math.floor(data.length * 0.15).toString() }
                 ]);
             } else {
                 // If RPC fails, set empty array
@@ -191,7 +187,7 @@ const Admin = () => {
         return () => {
             usersFetchCancelled.current = true;
         };
-    }, []); // Empty deps - run only once on mount
+    }, [fetchUsersList, navigate]);
 
     if (loading) {
         return (

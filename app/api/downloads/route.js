@@ -6,7 +6,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
-// GET /api/downloads - Fetch all download buttons
+// GET /api/downloads - Fetch all download buttons.
 export async function GET() {
     try {
         if (!supabase) {

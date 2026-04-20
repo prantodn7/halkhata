@@ -1,14 +1,15 @@
 ﻿import React from 'react'
 
-import { MdOutlineFileDownload, MdTrendingUp, MdAccountBalance, MdAttachMoney, MdAccountBalanceWallet, MdReceiptLong, MdList, MdShoppingCart, MdAssessment, MdPayments, MdCheckCircle, MdArrowForward, MdPhoneIphone } from 'react-icons/md'
+import { MdOutlineFileDownload, MdTrendingUp, MdAccountBalanceWallet, MdReceiptLong, MdList, MdShoppingCart, MdAssessment, MdPayments, MdCheckCircle, MdArrowForward } from 'react-icons/md'
 import photo from '../../assets/extra.jpeg'
 import profit from '../../assets/Dep/dep1.jpg'
 import profit2 from '../../assets/Dep/dep2.jpeg'
 import profit3 from '../../assets/Dep/dep3.jpeg'
 import photo2 from '../../assets/extra2.jpeg'
 import { RxCross1 } from 'react-icons/rx'
-import { Link } from 'react-router-dom'
+import { Link } from '@/compat/react-router-dom'
 import { useSettings } from '../../context/SettingsContext'
+import Image from 'next/image'
 
 function Extraincome() {
   const { downloadUrl } = useSettings()
@@ -88,7 +89,7 @@ function Extraincome() {
         {/* cover pic------ */}
         <div className="relative overflow-hidden rounded-2xl pt-10">
           <div className="anim-fade-up">
-            <Image className='w-full h-auto rounded-2xl' src={photo} alt="Cover" />
+            <Image className='w-full h-auto rounded-2xl' src={photo} alt="Cover" priority sizes="(min-width: 1024px) 1280px, 100vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-2xl"></div>
           </div>
         </div>
@@ -97,7 +98,7 @@ function Extraincome() {
         <div className='md:flex items-center gap-12 py-16'>
           <div className="md:w-1/2">
             <div className="relative anim-fade-left delay-200">
-              <img src={photo2} alt="Income" className="rounded-2xl shadow-xl" />
+              <Image src={photo2} alt="Income" className="rounded-2xl shadow-xl w-full h-auto" sizes="(min-width: 768px) 50vw, 100vw" />
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg anim-float">
                 <span className="text-4xl">💰</span>
               </div>
@@ -134,19 +135,19 @@ function Extraincome() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow anim-fade-up delay-400">
-              <Image src={profit} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" />
+              <Image src={profit} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" sizes="(min-width: 768px) 33vw, 100vw" />
               <h2 className='flex items-center text-xl font-semibold text-gray-800 py-5 px-3'>
                 <RxCross1 className="text-red-500 mr-3" /> ব্যবসার খরচ দিন দিন বাড়ছে?
               </h2>
             </div>
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow anim-fade-up delay-500">
-              <Image src={profit2} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" />
+              <Image src={profit2} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" sizes="(min-width: 768px) 33vw, 100vw" />
               <h2 className='flex items-center text-xl font-semibold text-gray-800 py-5 px-3'>
                 <RxCross1 className="text-red-500 mr-3" /> নতুন পণ্য দোকানে তোলার জন্য যথেষ্ট পুঁজি নেই?
               </h2>
             </div>
             <div className="bg-white rounded-2xl  shadow-lg border border-gray-100 hover:shadow-xl transition-shadow anim-fade-up delay-600">
-              <Image src={profit3} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" />
+              <Image src={profit3} alt="" className="w-full h-60 object-cover rounded-t-xl mb-4" sizes="(min-width: 768px) 33vw, 100vw" />
               <h2 className='flex items-center text-xl font-semibold text-gray-800 py-5 px-3'>
                 <RxCross1 className="text-red-500 mr-3" /> কাস্টমার ধরে রাখতে নতুন কিছু অফার করতে পারছেন না?
               </h2>

@@ -6,7 +6,7 @@ import { FadeIn } from '../../Animated/AnimatedWrapper';
 
 const DownloadsManager = () => {
     const { language } = useLanguage();
-    const { getAllButtons, refreshDownloads, loading: contextLoading } = useDownloads();
+    const { refreshDownloads } = useDownloads();
     const [buttons, setButtons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingKey, setEditingKey] = useState(null);

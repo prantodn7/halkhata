@@ -21,8 +21,8 @@ function useOnScreen(options = {}) {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) {
-      setIsVisible(true)
-      return
+      const frame = window.requestAnimationFrame(() => setIsVisible(true))
+      return () => window.cancelAnimationFrame(frame)
     }
 
     const observer = new IntersectionObserver(

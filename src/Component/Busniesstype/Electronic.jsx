@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 ;
-import { Link } from 'react-router-dom';
+import Image from 'next/image';
+import { Link } from '@/compat/react-router-dom';
 import photo from '../../assets/Busniess/electronic.jpeg'
 import { useSettings } from '../../context/SettingsContext'
 
@@ -68,7 +69,7 @@ const Electronic = () => {
                         </div>
                     </div>
                     <div className='mt-10 md:mt-0 anim-scale delay-300'>
-                        <Image src={photo} alt="Electronic Business" className='rounded-2xl shadow-xl' />
+                        <Image src={photo} alt="Electronic Business" className='rounded-2xl shadow-xl w-full h-auto' priority sizes="(min-width: 768px) 50vw, 100vw" />
                     </div>
                 </div>
 

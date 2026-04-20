@@ -4,11 +4,15 @@ import { MdOutlineFileDownload } from 'react-icons/md'
 import { HiSparkles } from 'react-icons/hi'
 import { useLanguage } from '../../context/LanguageContext'
 import { useSettings } from '../../context/SettingsContext'
+import featureEn from '../../../public/Feature.json'
+import featureBan from '../../../public/Featureban.json'
+
+const _USE_STATE_COMPAT = useState;
 
 function Features() {
   const { language } = useLanguage()
   const { downloadUrl } = useSettings()
-  const [Feature, setFeature] = useState([])
+  const Feature = language === 'bangla' ? featureBan : featureEn
 
   const texts = {
     brandName: language === 'bangla' ? 'হালখাতা' : 'Halkhata',
@@ -23,13 +27,6 @@ function Features() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  useEffect(() => {
-    const jsonFile = language === 'bangla' ? '/Featureban.json' : '/Feature.json'
-    fetch(jsonFile)
-      .then(res => res.json())
-      .then(data => setFeature(data))
-  }, [language])
 
   return (
     <>
@@ -130,7 +127,7 @@ function Features() {
               >
                 {/* Icon */}
                 <div className='w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300'>
-                  <Image
+                  <img
                     className='w-10 h-10 object-contain'
                     src={feature.img}
                     alt={feature.name}
