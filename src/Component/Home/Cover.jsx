@@ -5,11 +5,11 @@ import Image from 'next/image'
 import { FiArrowRight } from 'react-icons/fi'
 import { FadeIn, ScaleIn } from '../Animated/AnimatedWrapper'
 import { useLanguage } from '../../context/LanguageContext'
-import { useSettings } from '../../context/SettingsContext'
+import { useDownloads } from '../../context/DownloadsContext'
 
 function Cover() {
   const { language } = useLanguage();
-  const { downloadUrl } = useSettings();
+  const { downloadUrl } = useDownloads();
 
   const texts = {
     brandName: language === 'bangla' ? 'হালখাতা' : 'Halkhata',

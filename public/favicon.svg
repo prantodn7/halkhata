@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle with subtle leaf suggestion -->
+  <circle cx="32" cy="32" r="30" fill="url(#greenGrad)" />
+
+  <!-- Leaf accent - subtle top right -->
+  <path d="M42 12 Q52 18 48 28 Q44 20 42 12" fill="#34d399" opacity="0.6" />
+
+  <!-- Bengali letter হ (Ha) - simplified and bold -->
+  <g fill="#ffffff">
+    <!-- Main body of হ -->
+    <ellipse cx="32" cy="32" rx="8" ry="7" />
+
+    <!-- Top horizontal bar (matra) -->
+    <rect x="18" y="20" width="28" height="4" rx="1" />
+
+    <!-- Right vertical stroke -->
+    <rect x="38" y="20" width="5" height="18" rx="1" />
+
+    <!-- Small connector dot -->
+    <circle cx="26" cy="32" r="2.5" />
+
+    <!-- Bottom curve -->
+    <path d="M22 36 Q26 42 32 40 Q38 38 42 36" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" />
+  </g>
+</svg>

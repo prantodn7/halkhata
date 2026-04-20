@@ -1,0 +1,30 @@
+{
+  "name": "Halkhata - Business Management",
+  "short_name": "Halkhata",
+  "description": "Halkhata business management platform for Bangla-speaking businesses.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10b981",
+  "theme_color": "#10b981",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon-icon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
-import { DEFAULT_DOWNLOAD_URL, FALLBACK_BUTTONS } from '../lib/downloads';
+import { DEFAULT_DOWNLOAD_URL, FALLBACK_BUTTONS } from '@/src/lib/downloads';
 
-export { BUTTON_KEYS, DEFAULT_DOWNLOAD_URL } from '../lib/downloads';
+export { BUTTON_KEYS, DEFAULT_DOWNLOAD_URL } from '@/src/lib/downloads';
 
 const DownloadsContext = createContext();
 

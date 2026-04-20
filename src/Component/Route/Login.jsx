@@ -3,6 +3,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff, FiLoader } from 'react-icons/fi';
 import { Link, useNavigate } from '@/compat/react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { supabase } from '../../config/supabaseClient';
+import halkhataLogo from '../../assets/halkhata.png';
 
 const Login = () => {
     const { language } = useLanguage();
@@ -30,7 +31,9 @@ const Login = () => {
         passwordPlaceholder: language === 'bangla' ? 'আপনার পাসওয়ার্ড লিখুন' : 'Enter your password',
         errorInvalid: language === 'bangla' ? 'ইমেইল বা পাসওয়ার্ড ভুল' : 'Invalid email or password',
         errorNotConfirmed: language === 'bangla' ? 'অনুগ্রহ করে আপনার ইমেইল নিশ্চিত করুন' : 'Please confirm your email first',
-        errorGeneric: language === 'bangla' ? 'লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।' : 'Login failed. Please try again.'
+        errorGeneric: language === 'bangla' ? 'লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।' : 'Login failed. Please try again.',
+        sideTitle: language === 'bangla' ? 'ব্যবসা পরিচালনা করুন সহজে' : 'Manage Your Business with Ease',
+        sideSubtitle: language === 'bangla' ? 'ডিজিটাল হালখাতা - আপনার ব্যবসার সব্জি সমাধান' : 'Digital Halkhata - Complete solution for your business'
     };
 
     const handleInputChange = (e) => {
@@ -79,27 +82,77 @@ const Login = () => {
     };
 
     return (
-        <div className='relative overflow-hidden min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 flex items-center justify-center px-5 py-10'>
-            {/* Background decorations */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-emerald-100/40 to-teal-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-emerald-100/30 to-green-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+        <div className='min-h-screen flex flex-col lg:flex-row'>
+            {/* Left Side Panel - Halkhata Branding */}
+            <div className='lg:w-1/2 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 min-h-[300px] lg:min-h-screen relative overflow-hidden flex items-center justify-center p-8 lg:p-16'>
+                {/* Decorative circles */}
+                <div className='absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl'></div>
+                <div className='absolute top-1/3 right-10 w-48 h-48 bg-white/10 rounded-full blur-2xl'></div>
+                <div className='absolute bottom-20 left-1/4 w-40 h-40 bg-white/5 rounded-full blur-xl'></div>
+                <div className='absolute top-1/4 left-1/3 w-24 h-24 bg-white/20 rounded-full'></div>
+                <div className='absolute bottom-1/3 right-1/4 w-16 h-16 bg-white/15 rounded-full'></div>
+                <div className='absolute top-1/2 right-10 w-20 h-20 bg-white/10 rounded-full'></div>
 
-            {/* Floating shapes */}
-            <div className="absolute top-20 left-10 w-20 h-20 bg-emerald-200/30 rounded-2xl rotate-12 animate-float"></div>
-            <div className="absolute top-40 right-20 w-16 h-16 bg-teal-200/30 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute bottom-32 left-1/4 w-12 h-12 bg-green-200/40 rounded-lg rotate-45 animate-float" style={{ animationDelay: '2s' }}></div>
+                {/* Content */}
+                <div className='relative z-10 text-center'>
+                    {/* Halkhata Logo/Image */}
+                    <div className='mb-8'>
+                        <img
+                            src={halkhataLogo}
+                            alt='হালখাতা - Halkhata'
+                            className='w-64 md:w-80 mx-auto drop-shadow-2xl'
+                        />
+                    </div>
 
-            <div className='relative w-full max-w-md'>
-                {/* Logo/Brand */}
-                <div className='text-center mb-8'>
-                    <h1 className='text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2'>
-                        {language === 'bangla' ? 'হালখাতা' : 'Halkhata'}
-                    </h1>
-                    <p className='text-gray-500'>{texts.subtitle}</p>
+                    {/* Decorative line */}
+                    <div className='w-24 h-1 bg-white/60 rounded-full mx-auto mb-6'></div>
+
+                    {/* Title and subtitle */}
+                    <h2 className='text-2xl md:text-3xl font-bold text-white mb-3'>
+                        {texts.sideTitle}
+                    </h2>
+                    <p className='text-white/80 text-base md:text-lg max-w-md mx-auto'>
+                        {texts.sideSubtitle}
+                    </p>
+
+                    {/* Bottom decoration */}
+                    <div className='flex justify-center gap-3 mt-8'>
+                        <div className='w-3 h-3 bg-white/40 rounded-full animate-pulse'></div>
+                        <div className='w-3 h-3 bg-white/60 rounded-full animate-pulse' style={{ animationDelay: '0.2s' }}></div>
+                        <div className='w-3 h-3 bg-white/40 rounded-full animate-pulse' style={{ animationDelay: '0.4s' }}></div>
+                    </div>
                 </div>
 
-                {/* Login Form */}
-                <div className='bg-white rounded-2xl shadow-xl p-8'>
+                {/* Corner decorations */}
+                <div className='absolute top-0 left-0 w-32 h-32 border-l-4 border-t-4 border-white/30 rounded-tl-3xl'></div>
+                <div className='absolute bottom-0 right-0 w-32 h-32 border-r-4 border-b-4 border-white/30 rounded-br-3xl'></div>
+            </div>
+
+            {/* Right Side - Login Form */}
+            <div className='lg:w-1/2 flex items-center justify-center p-5 py-10 lg:p-16 bg-gradient-to-br from-slate-50 via-white to-emerald-50 relative overflow-hidden'>
+                {/* Background decorations */}
+                <div className="absolute top-10 right-10 w-40 h-40 bg-emerald-100/40 rounded-full blur-2xl"></div>
+                <div className="absolute bottom-10 left-10 w-32 h-32 bg-teal-100/30 rounded-full blur-2xl"></div>
+
+                <div className='relative w-full max-w-md'>
+                    {/* Logo/Brand for mobile only */}
+                    <div className='lg:hidden text-center mb-8'>
+                        <h1 className='text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2'>
+                            {language === 'bangla' ? 'হালখাতা' : 'Halkhata'}
+                        </h1>
+                        <p className='text-gray-500'>{texts.subtitle}</p>
+                    </div>
+
+                    {/* Desktop title */}
+                    <div className='hidden lg:block mb-8'>
+                        <h1 className='text-3xl font-bold text-gray-900 mb-2'>
+                            {texts.title}
+                        </h1>
+                        <p className='text-gray-500'>{texts.subtitle}</p>
+                    </div>
+
+                    {/* Login Form */}
+                    <div className='bg-white rounded-2xl shadow-xl p-8'>
 
                     {/* Error Message */}
                     {error && (
@@ -190,6 +243,7 @@ const Login = () => {
                             {texts.register}
                         </Link>
                     </p>
+                </div>
                 </div>
             </div>
         </div>

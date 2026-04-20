@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background with rounded corners -->
+  <rect x="10" y="10" width="160" height="160" rx="36" fill="url(#greenGrad)" />
+
+  <!-- Leaf accent -->
+  <path d="M110 40 Q150 60 140 100 Q120 70 110 40" fill="#34d399" opacity="0.5" />
+
+  <!-- Bengali হ (Ha) - large and bold -->
+  <g fill="#ffffff">
+    <!-- Top horizontal bar (matra) -->
+    <rect x="50" y="60" width="80" height="12" rx="3" />
+
+    <!-- Right vertical stroke -->
+    <rect x="115" y="60" width="14" height="55" rx="3" />
+
+    <!-- Main body - oval -->
+    <ellipse cx="90" cy="95" rx="28" ry="24" />
+
+    <!-- Small inner accent dot -->
+    <circle cx="72" cy="95" r="9" />
+
+    <!-- Bottom curve -->
+    <path d="M60 115 Q80 140 100 135 Q120 130 140 115" stroke="#ffffff" stroke-width="10" fill="none" stroke-linecap="round" />
+  </g>
+</svg>

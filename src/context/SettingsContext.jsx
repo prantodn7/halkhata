@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { BUTTON_KEYS, DEFAULT_DOWNLOAD_URL } from '../lib/downloads';
+import { BUTTON_KEYS, DEFAULT_DOWNLOAD_URL } from '@/src/lib/downloads';
 
 const SettingsContext = createContext();
 
