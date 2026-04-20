@@ -1,5 +1,5 @@
-import React from 'react'
-import Image from 'next/image'
+﻿import React from 'react'
+
 import { Link } from 'react-router-dom'
 import { HiArrowRight } from 'react-icons/hi'
 import { FiGrid } from 'react-icons/fi'

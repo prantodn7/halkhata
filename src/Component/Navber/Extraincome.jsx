@@ -1,5 +1,5 @@
-import React from 'react'
-import Image from 'next/image'
+﻿import React from 'react'
+
 import { MdOutlineFileDownload, MdTrendingUp, MdAccountBalance, MdAttachMoney, MdAccountBalanceWallet, MdReceiptLong, MdList, MdShoppingCart, MdAssessment, MdPayments, MdCheckCircle, MdArrowForward, MdPhoneIphone } from 'react-icons/md'
 import photo from '../../assets/extra.jpeg'
 import profit from '../../assets/Dep/dep1.jpg'
@@ -97,7 +97,7 @@ function Extraincome() {
         <div className='md:flex items-center gap-12 py-16'>
           <div className="md:w-1/2">
             <div className="relative anim-fade-left delay-200">
-              <Image src={photo2} alt="Income" className="rounded-2xl shadow-xl" />
+              <img src={photo2} alt="Income" className="rounded-2xl shadow-xl" />
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg anim-float">
                 <span className="text-4xl">💰</span>
               </div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
+﻿import React, { useEffect, useState } from 'react'
+
 import { MdOutlineFileDownload } from 'react-icons/md'
 import { HiSparkles } from 'react-icons/hi'
 import { useLanguage } from '../../context/LanguageContext'

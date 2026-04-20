@@ -1,5 +1,5 @@
-import React from 'react'
-import Image from 'next/image'
+﻿import React from 'react'
+
 import photo from '../../assets/photo.png'
 import { FiArrowRight, FiPlay, FiUsers, FiTrendingUp, FiShield } from 'react-icons/fi'
 import { FadeIn, ScaleIn } from '../Animated/AnimatedWrapper'
@@ -126,15 +126,7 @@ function Cover() {
 
                 {/* Main image with floating animation */}
                 <div className="relative bg-white p-2 md:p-3 rounded-2xl md:rounded-3xl shadow-2xl shadow-gray-200/50 hover:shadow-emerald-200/50 transition-all duration-500 max-w-[320px] md:max-w-[400px] mx-auto animate-float-image hover:scale-105">
-                  <Image
-                    className="w-full h-auto rounded-xl md:rounded-2xl object-cover"
-                    src={photo}
-                    alt="Halkhata Business Management"
-                    width={400}
-                    height={320}
-                    sizes="(max-width: 768px) 320px, 400px"
-                    priority
-                  />
+                  <img className="w-full h-auto rounded-xl md:rounded-2xl object-cover" src={photo} alt="Halkhata Business Management" />
 
                   {/* Shine effect overlay */}
                   <div className="absolute inset-0 rounded-xl md:rounded-2xl overflow-hidden pointer-events-none">

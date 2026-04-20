@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import Image from 'next/image';
+﻿import React, { useEffect } from 'react';
+;
 import { Link } from 'react-router-dom';
 import photo from '../../assets/Busniess/fashion.jpeg'
 import { useSettings } from '../../context/SettingsContext'
