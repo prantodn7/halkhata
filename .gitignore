@@ -12,7 +12,20 @@ node_modules
 .next.zip
 dist
 dist-ssr
+build
+out
+coverage
+.turbo
+.cache
+tmp
+temp
+*.tmp
+*.temp
+*.tsbuildinfo
 *.local
+.env*.local
+.vercel
+.netlify
 
 # Editor directories and files
 .vscode/*
