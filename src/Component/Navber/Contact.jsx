@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react'
-import { FaPhoneAlt, FaFacebookF, FaEnvelope, FaMapMarkerAlt, FaHeadphones } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react'
+import { FaPhoneAlt, FaFacebookF, FaEnvelope, FaMapMarkerAlt, FaHeadphones, FaCheck, FaSpinner } from 'react-icons/fa'
 import { HiSparkles } from 'react-icons/hi'
 import { useLanguage } from '../../context/LanguageContext'
 
 function Contact() {
   const { language } = useLanguage()
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    business_type: '',
+    reason: '',
+    message: ''
+  })
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const texts = {
     brandName: language === 'bangla' ? 'হালখাতা' : 'Halkhata',
@@ -52,7 +62,58 @@ function Contact() {
     customerManagement: language === 'bangla' ? 'গ্রাহক ম্যানেজমেন্ট' : 'Customer Management',
     message: language === 'bangla' ? 'বার্তা *' : 'Message *',
     enterMessage: language === 'bangla' ? 'আপনার বার্তা লিখুন' : 'Enter your message',
-    submit: language === 'bangla' ? 'বার্তা পাঠান' : 'Submit Message'
+    submit: language === 'bangla' ? 'বার্তা পাঠান' : 'Submit Message',
+    submitting: language === 'bangla' ? 'পাঠানো হচ্ছে...' : 'Submitting...',
+    submitted: language === 'bangla' ? 'সফলভাবে পাঠানো হয়েছে!' : 'Message Sent Successfully!',
+    sendAnother: language === 'bangla' ? 'আরেকটি বার্তা পাঠান' : 'Send Another Message',
+    requiredFields: language === 'bangla' ? 'অনুগ্রহ করে সব প্রয়োজনীয় ক্ষেত্রগুলো পূরণ করুন' : 'Please fill in all required fields',
+    submitError: language === 'bangla' ? 'বার্তা পাঠাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।' : 'Failed to send message. Please try again.'
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    setError('')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    // Validation
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.message.trim()) {
+      setError(texts.requiredFields)
+      return
+    }
+
+    setSubmitting(true)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || texts.submitError)
+      }
+
+      setSubmitted(true)
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+        setFormData({ name: '', phone: '', business_type: '', reason: '', message: '' })
+      }, 3000)
+    } catch (err) {
+      setError(err.message || texts.submitError)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   useEffect(() => {
@@ -240,13 +301,16 @@ function Contact() {
               {texts.formDescription}
             </p>
 
-            <form className='space-y-5 relative z-10'>
+            <form onSubmit={handleSubmit} className='space-y-5 relative z-10'>
               {/* Name and Phone */}
               <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
                 <div>
                   <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.name}</label>
                   <input
                     type='text'
+                    name='name'
+                    value={formData.name}
+                    onChange={handleInputChange}
                     placeholder={texts.enterName}
                     className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all'
                   />
@@ -255,45 +319,48 @@ function Contact() {
                   <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.phone}</label>
                   <input
                     type='tel'
+                    name='phone'
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     placeholder={texts.phonePlaceholder}
                     className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all'
                   />
                 </div>
               </div>
 
-              {/* Email */}
-              <div>
-                <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.email}</label>
-                <input
-                  type='email'
-                  placeholder={texts.emailPlaceholder}
-                  className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all'
-                />
-              </div>
-
               {/* Business Type */}
               <div>
                 <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.businessType}</label>
-                <select className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all text-gray-700'>
-                  <option>{texts.selectBusiness}</option>
-                  <option>{texts.retail}</option>
-                  <option>{texts.wholesale}</option>
-                  <option>{texts.manufacturing}</option>
-                  <option>{texts.service}</option>
-                  <option>{texts.other}</option>
+                <select
+                  name='business_type'
+                  value={formData.business_type}
+                  onChange={handleInputChange}
+                  className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all text-gray-700'
+                >
+                  <option value=''>{texts.selectBusiness}</option>
+                  <option value='retail'>{texts.retail}</option>
+                  <option value='wholesale'>{texts.wholesale}</option>
+                  <option value='manufacturing'>{texts.manufacturing}</option>
+                  <option value='service'>{texts.service}</option>
+                  <option value='other'>{texts.other}</option>
                 </select>
               </div>
 
               {/* Reason for Using the App */}
               <div>
                 <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.reason}</label>
-                <select className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all text-gray-700'>
-                  <option>{texts.select}</option>
-                  <option>{texts.accounting}</option>
-                  <option>{texts.inventory}</option>
-                  <option>{texts.salesTracking}</option>
-                  <option>{texts.customerManagement}</option>
-                  <option>{texts.other}</option>
+                <select
+                  name='reason'
+                  value={formData.reason}
+                  onChange={handleInputChange}
+                  className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all text-gray-700'
+                >
+                  <option value=''>{texts.select}</option>
+                  <option value='accounting'>{texts.accounting}</option>
+                  <option value='inventory'>{texts.inventory}</option>
+                  <option value='salesTracking'>{texts.salesTracking}</option>
+                  <option value='customerManagement'>{texts.customerManagement}</option>
+                  <option value='other'>{texts.other}</option>
                 </select>
               </div>
 
@@ -301,18 +368,49 @@ function Contact() {
               <div>
                 <label className='block text-sm font-semibold text-gray-700 mb-2'>{texts.message}</label>
                 <textarea
+                  name='message'
+                  value={formData.message}
+                  onChange={handleInputChange}
                   placeholder={texts.enterMessage}
                   rows='4'
                   className='w-full px-4 py-3 bg-green-50/50 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all resize-none'
                 ></textarea>
               </div>
 
+              {/* Error Message */}
+              {error && (
+                <div className='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm'>
+                  {error}
+                </div>
+              )}
+
+              {/* Success Message */}
+              {submitted && (
+                <div className='bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm flex items-center gap-2'>
+                  <FaCheck className='text-green-600' />
+                  {texts.submitted}
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 type='submit'
-                className='w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-0.5'
+                disabled={submitting || submitted}
+                className='w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2'
               >
-                {texts.submit}
+                {submitting ? (
+                  <>
+                    <FaSpinner className='animate-spin' />
+                    {texts.submitting}
+                  </>
+                ) : submitted ? (
+                  <>
+                    <FaCheck />
+                    {texts.sendAnother}
+                  </>
+                ) : (
+                  texts.submit
+                )}
               </button>
             </form>
           </div>

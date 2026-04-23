@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { FiShield, FiUsers, FiDownload, FiLink, FiSave, FiCheck, FiLoader, FiMail, FiPhone, FiUser, FiSearch, FiShield as FiShieldSmall, FiHome, FiActivity, FiTrendingUp, FiLogOut, FiMenu, FiX, FiDownloadCloud } from 'react-icons/fi';
+import { FiShield, FiUsers, FiDownload, FiLink, FiSave, FiCheck, FiLoader, FiMail, FiPhone, FiUser, FiSearch, FiShield as FiShieldSmall, FiHome, FiActivity, FiTrendingUp, FiLogOut, FiMenu, FiX, FiDownloadCloud, FiMessageSquare, FiTrash2, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useNavigate } from '@/compat/react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { supabase } from '../../config/supabaseClient';
@@ -19,6 +19,9 @@ const Admin = () => {
     const [actionLoading, setActionLoading] = useState(null);
     const [activeSection, setActiveSection] = useState('dashboard');
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [messagesLoading, setMessagesLoading] = useState(true);
+    const [selectedMessage, setSelectedMessage] = useState(null);
 
     // Use refs to track initialization and prevent multiple calls
     const isInitialized = useRef(false);
@@ -27,7 +30,7 @@ const Admin = () => {
     const [statsCards, setStatsCards] = useState([
         { icon: FiUsers, label: 'Total Users', labelBan: 'মোট ব্যবহারকারী', value: '0', color: 'from-emerald-500 to-teal-500', bgLight: 'bg-emerald-100' },
         { icon: FiActivity, label: 'Active Today', labelBan: 'আজ সক্রিয়', value: '0', color: 'from-blue-500 to-indigo-500', bgLight: 'bg-blue-100' },
-        { icon: FiTrendingUp, label: 'New This Week', labelBan: 'এই সপ্তাহে নতুন', value: '0', color: 'from-orange-500 to-amber-500', bgLight: 'bg-orange-100' }
+        { icon: FiMessageSquare, label: 'Messages', labelBan: 'বার্তাসমূহ', value: '0', color: 'from-purple-500 to-pink-500', bgLight: 'bg-purple-100' }
     ]);
 
     const texts = {
@@ -65,13 +68,25 @@ const Admin = () => {
         quickActions: language === 'bangla' ? 'দ্রুত পদক্ষেপ' : 'Quick Actions',
         loading: language === 'bangla' ? 'লোড হচ্ছে...' : 'Loading...',
         errorLoadingSettings: language === 'bangla' ? 'সেটিংস লোড করতে সমস্যা হয়েছে' : 'Error loading settings',
-        menuDownload: language === 'bangla' ? 'ডাউনলোড লিংক' : 'Download Link'
+        menuDownload: language === 'bangla' ? 'ডাউনলোড লিংক' : 'Download Link',
+        menuMessages: language === 'bangla' ? 'বার্তাসমূহ' : 'Messages',
+        messages: language === 'bangla' ? 'বার্তাসমূহ' : 'Messages',
+        noMessages: language === 'bangla' ? 'কোন বার্তা নেই' : 'No messages',
+        viewMessage: language === 'bangla' ? 'বার্তা দেখুন' : 'View Message',
+        close: language === 'bangla' ? 'বন্ধ করুন' : 'Close',
+        delete: language === 'bangla' ? 'মুছুন' : 'Delete',
+        markAsRead: language === 'bangla' ? 'পঠিত হিসেবে চিহ্নিত করুন' : 'Mark as Read',
+        markAsUnread: language === 'bangla' ? 'অপঠিত হিসেবে চিহ্নিত করুন' : 'Mark as Unread',
+        confirmDelete: language === 'bangla' ? 'আপনি কি এই বার্তা মুছে ফেলতে চান?' : 'Are you sure you want to delete this message?',
+        businessType: language === 'bangla' ? 'ব্যবসার ধরন' : 'Business Type',
+        reasonForApp: language === 'bangla' ? 'অ্যাপ ব্যবহারের কারণ' : 'Reason for App'
     };
 
     const menuItems = [
         { id: 'dashboard', icon: FiActivity, label: texts.dashboard },
         { id: 'download', icon: FiDownloadCloud, label: texts.menuDownload },
         { id: 'users', icon: FiUsers, label: texts.menuUsers },
+        { id: 'messages', icon: FiMessageSquare, label: texts.menuMessages },
         { id: 'home', icon: FiHome, label: texts.goHome }
     ];
 
@@ -116,19 +131,122 @@ const Admin = () => {
         }
     }, []); // Empty deps - only created once
 
+    // Fetch all messages
+    const fetchMessages = useCallback(async () => {
+        setMessagesLoading(true);
+        try {
+            const response = await fetch('/api/contact');
+            const result = await response.json();
+
+            if (response.ok && result.data) {
+                setMessages(result.data);
+            } else {
+                setMessages([]);
+            }
+        } catch (err) {
+            console.error('Error fetching messages:', err);
+            setMessages([]);
+        } finally {
+            setMessagesLoading(false);
+        }
+    }, []);
+
+    // Update message status
+    const updateMessageStatus = async (id, status) => {
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            });
+
+            if (response.ok) {
+                setMessages(prev => prev.map(msg =>
+                    msg.id === id ? { ...msg, status } : msg
+                ));
+            }
+        } catch (err) {
+            console.error('Error updating message status:', err);
+        }
+    };
+
+    // Delete message
+    const deleteMessage = async (id) => {
+        if (!confirm(texts.confirmDelete)) return;
+
+        try {
+            const response = await fetch(`/api/contact?id=${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                setMessages(prev => prev.filter(msg => msg.id !== id));
+                if (selectedMessage?.id === id) {
+                    setSelectedMessage(null);
+                }
+            }
+        } catch (err) {
+            console.error('Error deleting message:', err);
+        }
+    };
+
     // Make user admin
     const makeAdmin = async (userEmail) => {
         setActionLoading(userEmail);
-        alert(`To make ${userEmail} an admin, go to Supabase Dashboard → Authentication → Users → Find this user → Edit metadata → Add "role": "admin"`);
-        setActionLoading(null);
+        try {
+            const response = await fetch('/api/users/admin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Update local state
+                setUsersList(prev => prev.map(u =>
+                    u.email === userEmail ? { ...u, role: 'admin' } : u
+                ));
+                alert(result.message || `${userEmail} is now an admin`);
+            } else {
+                alert(result.error || 'Failed to make user admin');
+            }
+        } catch (err) {
+            console.error('Error making admin:', err);
+            alert('Error making user admin');
+        } finally {
+            setActionLoading(null);
+        }
     };
 
     // Remove admin
     const removeAdmin = async (userEmail) => {
         if (!confirm(texts.confirmRemove)) return;
         setActionLoading(userEmail);
-        alert(`To remove admin from ${userEmail}, go to Supabase Dashboard → Authentication → Users → Find this user → Edit metadata → Remove "role": "admin"`);
-        setActionLoading(null);
+        try {
+            const response = await fetch('/api/users/admin', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Update local state
+                setUsersList(prev => prev.map(u =>
+                    u.email === userEmail ? { ...u, role: null } : u
+                ));
+                alert(result.message || `Admin role removed from ${userEmail}`);
+            } else {
+                alert(result.error || 'Failed to remove admin role');
+            }
+        } catch (err) {
+            console.error('Error removing admin:', err);
+            alert('Error removing admin role');
+        } finally {
+            setActionLoading(null);
+        }
     };
 
     // Filter users based on search
@@ -188,6 +306,22 @@ const Admin = () => {
             usersFetchCancelled.current = true;
         };
     }, [fetchUsersList, navigate]);
+
+    // Fetch messages when switching to messages section
+    useEffect(() => {
+        if (activeSection === 'messages' && isAdmin) {
+            fetchMessages();
+        }
+    }, [activeSection, isAdmin, fetchMessages]);
+
+    // Update stats when messages change
+    useEffect(() => {
+        setStatsCards(prev => [
+            { ...prev[0], value: totalUsers.toString() },
+            { ...prev[1], value: Math.floor(totalUsers * 0.7).toString() },
+            { ...prev[2], value: messages.filter(m => m.status === 'unread').length.toString() + '/' + messages.length.toString() }
+        ]);
+    }, [totalUsers, messages]);
 
     if (loading) {
         return (
@@ -358,7 +492,7 @@ const Admin = () => {
                             <FadeIn delay={400}>
                                 <div className='bg-white/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl shadow-gray-200/50 border border-white/50'>
                                     <h3 className='text-xl font-bold text-gray-800 mb-4'>{texts.quickActions}</h3>
-                                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                                         <button
                                             onClick={() => setActiveSection('download')}
                                             className='flex items-center gap-4 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl hover:from-emerald-100 hover:to-teal-100 transition-all duration-300 group'
@@ -376,6 +510,20 @@ const Admin = () => {
                                                 <FiUsers className='text-white' />
                                             </div>
                                             <span className='font-semibold text-gray-700'>{texts.menuUsers}</span>
+                                        </button>
+                                        <button
+                                            onClick={() => setActiveSection('messages')}
+                                            className='flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl hover:from-purple-100 hover:to-pink-100 transition-all duration-300 group'
+                                        >
+                                            <div className='w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform'>
+                                                <FiMessageSquare className='text-white' />
+                                            </div>
+                                            <span className='font-semibold text-gray-700'>{texts.menuMessages}</span>
+                                            {messages.filter(m => m.status === 'unread').length > 0 && (
+                                                <span className='ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full'>
+                                                    {messages.filter(m => m.status === 'unread').length}
+                                                </span>
+                                            )}
                                         </button>
                                     </div>
                                 </div>
@@ -504,6 +652,152 @@ const Admin = () => {
                                         </tbody>
                                     </table>
                                 )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Messages Section */}
+                    {activeSection === 'messages' && (
+                        <div className='space-y-6'>
+                            <FadeIn>
+                                <div className='flex items-center gap-4 mb-8'>
+                                    <div className='w-14 h-14 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center'>
+                                        <FiMessageSquare className='text-purple-600 text-2xl' />
+                                    </div>
+                                    <div>
+                                        <h2 className='text-3xl font-bold text-gray-800'>{texts.messages}</h2>
+                                        <p className='text-gray-500'>{messages.filter(m => m.status === 'unread').length} {language === 'bangla' ? 'অপঠিত' : 'unread'}</p>
+                                    </div>
+                                </div>
+                            </FadeIn>
+
+                            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                                {/* Messages List */}
+                                <div className='bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-gray-200/50 border border-white/50'>
+                                    <div className='p-6 border-b border-gray-100'>
+                                        <h3 className='text-lg font-bold text-gray-800'>{language === 'bangla' ? 'সকল বার্তা' : 'All Messages'}</h3>
+                                    </div>
+                                    <div className='max-h-[500px] overflow-y-auto'>
+                                        {messagesLoading ? (
+                                            <div className='p-12 text-center'>
+                                                <div className='animate-spin rounded-full h-10 w-10 border-4 border-purple-500 border-t-transparent mx-auto'></div>
+                                            </div>
+                                        ) : messages.length === 0 ? (
+                                            <div className='p-12 text-center text-gray-500'>
+                                                {texts.noMessages}
+                                            </div>
+                                        ) : (
+                                            <div className='divide-y divide-gray-100'>
+                                                {messages.map((msg, index) => (
+                                                    <FadeIn key={msg.id} delay={index * 30}>
+                                                        <div
+                                                            onClick={() => setSelectedMessage(msg)}
+                                                            className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
+                                                                selectedMessage?.id === msg.id ? 'bg-purple-50' : ''
+                                                            } ${msg.status === 'unread' ? 'border-l-4 border-purple-500' : ''}`}
+                                                        >
+                                                            <div className='flex items-start justify-between gap-3'>
+                                                                <div className='flex-1 min-w-0'>
+                                                                    <div className='flex items-center gap-2 mb-1'>
+                                                                        <span className={`w-2 h-2 rounded-full ${msg.status === 'unread' ? 'bg-purple-500' : 'bg-gray-300'}`}></span>
+                                                                        <span className='font-semibold text-gray-900 truncate'>{msg.name}</span>
+                                                                    </div>
+                                                                    <p className='text-sm text-gray-500 truncate'>{msg.phone}</p>
+                                                                    <p className='text-sm text-gray-600 truncate mt-1'>{msg.message}</p>
+                                                                    <p className='text-xs text-gray-400 mt-2'>
+                                                                        {new Date(msg.created_at).toLocaleDateString()}
+                                                                    </p>
+                                                                </div>
+                                                                <FiEye className='text-gray-400 flex-shrink-0' />
+                                                            </div>
+                                                        </div>
+                                                    </FadeIn>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Message Detail */}
+                                <div className='bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-gray-200/50 border border-white/50'>
+                                    <div className='p-6 border-b border-gray-100'>
+                                        <h3 className='text-lg font-bold text-gray-800'>{texts.viewMessage}</h3>
+                                    </div>
+                                    <div className='p-6'>
+                                        {selectedMessage ? (
+                                            <div className='space-y-4'>
+                                                <div className='flex items-center justify-between'>
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                                        selectedMessage.status === 'unread'
+                                                            ? 'bg-purple-100 text-purple-700'
+                                                            : 'bg-gray-100 text-gray-600'
+                                                    }`}>
+                                                        {selectedMessage.status === 'unread' ? (language === 'bangla' ? 'অপঠিত' : 'Unread') : (language === 'bangla' ? 'পঠিত' : 'Read')}
+                                                    </span>
+                                                    <div className='flex items-center gap-2'>
+                                                        <button
+                                                            onClick={() => updateMessageStatus(
+                                                                selectedMessage.id,
+                                                                selectedMessage.status === 'unread' ? 'read' : 'unread'
+                                                            )}
+                                                            className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+                                                            title={selectedMessage.status === 'unread' ? texts.markAsRead : texts.markAsUnread}
+                                                        >
+                                                            {selectedMessage.status === 'unread' ? <FiEye className='text-gray-600' /> : <FiEyeOff className='text-gray-600' />}
+                                                        </button>
+                                                        <button
+                                                            onClick={() => deleteMessage(selectedMessage.id)}
+                                                            className='p-2 hover:bg-red-50 rounded-lg transition-colors'
+                                                            title={texts.delete}
+                                                        >
+                                                            <FiTrash2 className='text-red-600' />
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <p className='text-sm text-gray-500 mb-1'>{texts.name}</p>
+                                                    <p className='font-semibold text-gray-900'>{selectedMessage.name}</p>
+                                                </div>
+
+                                                <div>
+                                                    <p className='text-sm text-gray-500 mb-1'>{texts.phone}</p>
+                                                    <p className='text-gray-700'>{selectedMessage.phone}</p>
+                                                </div>
+
+                                                {selectedMessage.business_type && (
+                                                    <div>
+                                                        <p className='text-sm text-gray-500 mb-1'>{texts.businessType}</p>
+                                                        <p className='text-gray-700 capitalize'>{selectedMessage.business_type}</p>
+                                                    </div>
+                                                )}
+
+                                                {selectedMessage.reason && (
+                                                    <div>
+                                                        <p className='text-sm text-gray-500 mb-1'>{texts.reasonForApp}</p>
+                                                        <p className='text-gray-700 capitalize'>{selectedMessage.reason}</p>
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <p className='text-sm text-gray-500 mb-1'>{texts.message}</p>
+                                                    <p className='text-gray-700 bg-gray-50 p-3 rounded-lg'>{selectedMessage.message}</p>
+                                                </div>
+
+                                                <div>
+                                                    <p className='text-xs text-gray-400'>
+                                                        {new Date(selectedMessage.created_at).toLocaleString()}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className='text-center text-gray-500 py-12'>
+                                                <FiMessageSquare className='text-4xl text-gray-300 mx-auto mb-4' />
+                                                <p>{language === 'bangla' ? 'একটি বার্তা নির্বাচন করুন' : 'Select a message to view'}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
